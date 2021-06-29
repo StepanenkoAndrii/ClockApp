@@ -55,7 +55,10 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 
   Future<int> getNewId() async {
-    return await _alarms.then((value) => value.last.id) + 1;
+    List<AlarmInfo> _alarmsList = await _alarms;
+    if (_alarmsList.length > 0)
+      return await _alarms.then((value) => value.last.id) + 1;
+    return 1;
   }
 
   String getTextDate() {
@@ -475,7 +478,7 @@ class _AlarmPageState extends State<AlarmPage> {
                               width: 24,
                             ),
                             TextButton(
-                              onPressed: () async {
+                              onPressed: () {
                                 if (pickedDate != null && pickedTime != null) {
                                   changeAlarmStateToFalse();
                                   alarmTime.add(getTextTime());
@@ -497,7 +500,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                   final result =
                                       futureDateTime - currentDateTime;
                                   print(result / 1000);
-                                  var newId = await getNewId();
+                                  var newId = getNewId();
                                   print(newId);
                                   alarmNotification(context, result, newId);
                                   var alarmInfo = AlarmInfo(
@@ -532,9 +535,9 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 }
 
-Future<void> alarmNotification(context, int result, int id) async {
+Future<void> alarmNotification(context, int result, Future<int> id) async {
   await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
+      await id,
       'scheduled title',
       'scheduled body',
       tz.TZDateTime.now(tz.local).add(Duration(milliseconds: result)),
