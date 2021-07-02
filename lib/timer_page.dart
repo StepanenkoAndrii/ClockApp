@@ -125,8 +125,23 @@ class _TimerPageState extends State<TimerPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Flexible(
+            flex: 1,
+            fit: FlexFit.tight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Timer",
+                  style: GoogleFonts.acme(
+                    textStyle: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
-            flex: 6,
+            flex: 5,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

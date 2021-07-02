@@ -121,6 +121,12 @@ class _AlarmPageState extends State<AlarmPage> {
     });
   }
 
+  Future<bool> alarmsVisibility() async {
+    List<AlarmInfo> _alarmsList = await _alarms;
+    if (_alarmsList.length > 0) return true;
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -152,14 +158,6 @@ class _AlarmPageState extends State<AlarmPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // TextButton(
-                  //   onPressed: () {
-                  //     pickTime(context);
-                  //   },
-                  //   child: Text(
-                  //     getTextTime(),
-                  //   ),
-                  // ),
                   Text(
                     "Current alarms",
                     style: GoogleFonts.acme(
@@ -171,7 +169,8 @@ class _AlarmPageState extends State<AlarmPage> {
                   ),
                   Visibility(
                     // visible: workingAlarmsNum > 0,
-                    visible: _alarms.toString().length > 0,
+                    // visible: alarmsVisibility(),
+                    visible: true,
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.5,
                       padding: EdgeInsets.symmetric(
@@ -225,6 +224,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                         TextButton(
                                           onPressed: () {
                                             deleteAlarmById(alarm.id);
+                                            loadAlarms();
                                             // setState(() {
                                             //   cancelNotification(index);
                                             //   alarmDate.removeAt(index);
@@ -287,7 +287,9 @@ class _AlarmPageState extends State<AlarmPage> {
                     ),
                   ),
                   Visibility(
-                    visible: _alarms.toString().length <= 0,
+                    // visible: _alarms.toString().length <= 0,
+                    // visible: !alarmsVisibility(),
+                    visible: false,
                     child: Padding(
                       padding: EdgeInsets.only(
                         top: 16,
@@ -507,6 +509,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                       alarmDate: getTextDate(),
                                       alarmTime: getTextTime());
                                   _alarmDB.insertAlarm(alarmInfo);
+                                  loadAlarms();
                                 } else
                                   changeAlarmStateToFalse();
                               },
@@ -538,15 +541,20 @@ class _AlarmPageState extends State<AlarmPage> {
 Future<void> alarmNotification(context, int result, Future<int> id) async {
   await flutterLocalNotificationsPlugin.zonedSchedule(
       await id,
-      'scheduled title',
-      'scheduled body',
+      'Alarm',
+      'The time has come',
       tz.TZDateTime.now(tz.local).add(Duration(milliseconds: result)),
       const NotificationDetails(
-          android: AndroidNotificationDetails('full screen channel id',
-              'full screen channel name', 'full screen channel description',
-              priority: Priority.high,
-              importance: Importance.high,
-              fullScreenIntent: true)),
+          android: AndroidNotificationDetails(
+        'full screen channel id',
+        'full screen channel name',
+        'full screen channel description',
+        priority: Priority.high,
+        importance: Importance.high,
+        sound: RawResourceAndroidNotificationSound('alarm_sound'),
+        playSound: true,
+        // fullScreenIntent: true,
+      )),
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime);
