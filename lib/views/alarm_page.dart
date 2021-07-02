@@ -1,5 +1,7 @@
 // import 'package:day_night_time_picker/day_night_time_picker.dart';
 // import 'package:day_night_time_picker/lib/constants.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,6 +52,12 @@ class _AlarmPageState extends State<AlarmPage> {
   void deleteAlarmById(int id) {
     setState(() {
       cancelNotification(id);
+      _alarmDB.deleteAlarm(id);
+    });
+  }
+
+  void deleteAlarm(int id) {
+    setState(() {
       _alarmDB.deleteAlarm(id);
     });
   }
@@ -198,7 +206,6 @@ class _AlarmPageState extends State<AlarmPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          // alarmDate[index],
                                           alarm.alarmDate,
                                           style: GoogleFonts.acme(
                                             textStyle: TextStyle(
@@ -450,7 +457,6 @@ class _AlarmPageState extends State<AlarmPage> {
                             TextButton(
                               onPressed: () {
                                 changeAlarmStateToFalse();
-                                // Navigator.of(context).pop();
                               },
                               child: Text(
                                 "Cancel",
@@ -485,12 +491,10 @@ class _AlarmPageState extends State<AlarmPage> {
                                           DateTime.now().hour,
                                           DateTime.now().minute)
                                       .millisecondsSinceEpoch;
-                                  final result =
+                                  final duration =
                                       futureDateTime - currentDateTime;
-                                  print(result / 1000);
                                   var newId = getNewId();
-                                  print(newId);
-                                  alarmNotification(context, result, newId);
+                                  alarmNotification(context, duration, newId);
                                   var alarmInfo = AlarmInfo(
                                       alarmDate: getTextDate(),
                                       alarmTime: getTextTime());
@@ -524,12 +528,12 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 }
 
-Future<void> alarmNotification(context, int result, Future<int> id) async {
+Future<void> alarmNotification(context, int duration, Future<int> id) async {
   await flutterLocalNotificationsPlugin.zonedSchedule(
       await id,
       'Alarm',
       'The time has come',
-      tz.TZDateTime.now(tz.local).add(Duration(milliseconds: result)),
+      tz.TZDateTime.now(tz.local).add(Duration(milliseconds: duration)),
       const NotificationDetails(
           android: AndroidNotificationDetails(
         'full screen channel id',
@@ -539,7 +543,6 @@ Future<void> alarmNotification(context, int result, Future<int> id) async {
         importance: Importance.high,
         sound: RawResourceAndroidNotificationSound('alarm_sound'),
         playSound: true,
-        // fullScreenIntent: true,
       )),
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:

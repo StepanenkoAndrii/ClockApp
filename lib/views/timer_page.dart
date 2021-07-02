@@ -20,7 +20,7 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
   var hours = 0;
   var minutes = 0;
   var seconds = 0;
-  var started = false;
+  var started = true;
   var stopped = true;
   var timeForTimer = 0;
   var timerIsWorking = false;
@@ -168,6 +168,10 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                         onChanged: (value) {
                           setState(
                             () {
+                              if (value > 0)
+                                started = false;
+                              else
+                                started = true;
                               hours = value;
                             },
                           );
@@ -213,6 +217,10 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                         onChanged: (value) {
                           setState(
                             () {
+                              if (value > 0)
+                                started = false;
+                              else
+                                started = true;
                               minutes = value;
                             },
                           );
@@ -258,6 +266,10 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                         onChanged: (value) {
                           setState(
                             () {
+                              if (value > 0)
+                                started = false;
+                              else
+                                started = true;
                               seconds = value;
                             },
                           );
