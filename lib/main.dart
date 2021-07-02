@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:start_app/enums.dart';
-import 'package:start_app/menu_info.dart';
-import 'package:start_app/time_info.dart';
-import 'homepage.dart';
-
-// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//     FlutterLocalNotificationsPlugin();
+import 'package:start_app/other/enums.dart';
+import 'package:start_app/other/menu_info.dart';
+import 'package:start_app/other/time_info.dart';
+import 'home_page.dart';
 
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // const AndroidInitializationSettings initializationSettingsAndroid =
-  //     AndroidInitializationSettings('app_icon');
-  // final InitializationSettings initializationSettings = InitializationSettings(
-  //   android: initializationSettingsAndroid,
-  // );
-  // await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-  //     onSelectNotification: (String payload) async {
-  //   if (payload != null) {
-  //     debugPrint('notification payload: $payload');
-  //   }
-  // });
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   runApp(MyApp());
 }
 

@@ -16,14 +16,13 @@ class TimerPage extends StatefulWidget {
   _TimerPageState createState() => _TimerPageState();
 }
 
-class _TimerPageState extends State<TimerPage> {
+class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
   var hours = 0;
   var minutes = 0;
   var seconds = 0;
   var started = false;
   var stopped = true;
   var timeForTimer = 0;
-  // var timeToDisplay = '';
   var timerIsWorking = false;
   CountDownController _controller = CountDownController();
   var _visible = false;
@@ -49,7 +48,6 @@ class _TimerPageState extends State<TimerPage> {
       (Timer timer) {
         setState(
           () {
-            // if (mounted) {
             if (timeForTimer < 1 || !timerIsWorking) {
               if (timeForTimer < 1) _visible = false;
               timer.cancel();
@@ -58,7 +56,6 @@ class _TimerPageState extends State<TimerPage> {
             } else {
               timeForTimer -= 1;
             }
-            // }
           },
         );
       },
@@ -85,36 +82,24 @@ class _TimerPageState extends State<TimerPage> {
     });
   }
 
-  String normalTimeDisplay(int timeForTimer) {
-    int hours, minutes, seconds;
-    String hoursStr, minutesStr, secondsStr;
-
-    hours = timeForTimer ~/ 3600;
-    timeForTimer -= hours * 3600;
-    minutes = timeForTimer ~/ 60;
-    seconds = timeForTimer - minutes * 60;
-
-    if (hours < 10)
-      hoursStr = '0' + hours.toString();
-    else
-      hoursStr = hours.toString();
-    if (minutes < 10)
-      minutesStr = '0' + minutes.toString();
-    else
-      minutesStr = minutes.toString();
-    if (seconds < 10)
-      secondsStr = '0' + seconds.toString();
-    else
-      secondsStr = seconds.toString();
-
-    return hoursStr + " : " + minutesStr + " : " + secondsStr;
-  }
-
   @override
   void initState() {
     initializeSetting();
     tz.initializeTimeZones();
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
+      print("paused");
+      // _controller.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      print("resumed");
+      // _controller.resume();
+    }
   }
 
   @override
@@ -312,18 +297,6 @@ class _TimerPageState extends State<TimerPage> {
               ],
             ),
           ),
-          // Expanded(
-          //   flex: 1,
-          //   child: Text(
-          //     normalTimeDisplay(timeForTimer),
-          //     style: GoogleFonts.acme(
-          //       textStyle: TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 48,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Expanded(
             flex: 3,
             child: Column(
@@ -425,40 +398,15 @@ class _TimerPageState extends State<TimerPage> {
               ],
             ),
           ),
-          // TextButton(
-          //   onPressed: () {
-          //     timerNotification();
-          //     Timer(
-          //       Duration(seconds: 5),
-          //       () {
-          //         showDialog(
-          //           context: context,
-          //           builder: (context) {
-          //             return AlertDialog(
-          //               title: Text("Time has ended"),
-          //               content: Text("Timer has been stopped"),
-          //               actions: [
-          //                 TextButton(
-          //                   onPressed: () => Navigator.pop(context),
-          //                   child: Text("OK"),
-          //                 ),
-          //               ],
-          //             );
-          //           },
-          //         );
-          //       },
-          //     );
-          //   },
-          //   child: Text(
-          //     "Press",
-          //     style: TextStyle(
-          //       color: Colors.white,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 }
 
@@ -467,7 +415,6 @@ Future<void> timerNotification() async {
       0,
       'Timer',
       'Time has gone',
-      // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
       tz.TZDateTime.now(tz.local).add(
         const Duration(milliseconds: 100),
       ),

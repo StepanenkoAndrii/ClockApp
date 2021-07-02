@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:start_app/clock_page.dart';
-import 'package:start_app/data.dart';
-import 'package:start_app/enums.dart';
-import 'package:start_app/stopwatch_page.dart';
-import 'package:start_app/time_info.dart';
-import 'package:start_app/timer_page.dart';
+import 'package:start_app/views/clock_page.dart';
+import 'package:start_app/other/data.dart';
+import 'package:start_app/other/enums.dart';
+import 'package:start_app/views/stopwatch_page.dart';
+import 'package:start_app/other/time_info.dart';
+import 'package:start_app/views/timer_page.dart';
 // import 'package:start_app/variables.dart';
 
-import 'alarm_page.dart';
-import 'menu_info.dart';
+import 'views/alarm_page.dart';
+import 'other/menu_info.dart';
 
 Widget uploadPage(BuildContext context, MenuInfo data) {
   switch (data.menuType) {

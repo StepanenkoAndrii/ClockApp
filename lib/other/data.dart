@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:start_app/enums.dart';
-import 'package:start_app/menu_info.dart';
+import 'package:start_app/other/enums.dart';
+import 'package:start_app/other/menu_info.dart';
 
 List<MenuInfo> menuItems = [
   MenuInfo(

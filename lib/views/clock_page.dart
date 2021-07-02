@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:start_app/time_info.dart';
+import 'package:start_app/other/time_info.dart';
 
-import 'clock_view.dart';
+import '../other/clock_view.dart';
 
 class ClockPage extends StatefulWidget {
   @override

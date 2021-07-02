@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:start_app/alarm_db.dart';
-import 'package:start_app/alarm_info.dart';
+import 'package:start_app/other/alarm_db.dart';
+import 'package:start_app/other/alarm_info.dart';
 // import 'package:start_app/variables.dart';
 // import 'package:start_app/variables.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -168,8 +168,6 @@ class _AlarmPageState extends State<AlarmPage> {
                     ),
                   ),
                   Visibility(
-                    // visible: workingAlarmsNum > 0,
-                    // visible: alarmsVisibility(),
                     visible: true,
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.5,
@@ -183,8 +181,6 @@ class _AlarmPageState extends State<AlarmPage> {
                         future: _alarms,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            // print("Snapshot: " + snapshot.data[0]);
-
                             return ListView(
                               children: snapshot.data.map<Widget>(
                                 (alarm) {
@@ -212,7 +208,6 @@ class _AlarmPageState extends State<AlarmPage> {
                                           ),
                                         ),
                                         Text(
-                                          // alarmTime[index],
                                           alarm.alarmTime,
                                           style: GoogleFonts.acme(
                                             textStyle: TextStyle(
@@ -225,13 +220,6 @@ class _AlarmPageState extends State<AlarmPage> {
                                           onPressed: () {
                                             deleteAlarmById(alarm.id);
                                             loadAlarms();
-                                            // setState(() {
-                                            //   cancelNotification(index);
-                                            //   alarmDate.removeAt(index);
-                                            //   alarmTime.removeAt(index);
-                                            //   workingAlarmsNum--;
-                                            //   id--;
-                                            // });
                                           },
                                           style: ButtonStyle(
                                             backgroundColor:
@@ -287,8 +275,6 @@ class _AlarmPageState extends State<AlarmPage> {
                     ),
                   ),
                   Visibility(
-                    // visible: _alarms.toString().length <= 0,
-                    // visible: !alarmsVisibility(),
                     visible: false,
                     child: Padding(
                       padding: EdgeInsets.only(
