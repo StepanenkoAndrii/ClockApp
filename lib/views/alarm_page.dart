@@ -1,5 +1,3 @@
-// import 'package:day_night_time_picker/day_night_time_picker.dart';
-// import 'package:day_night_time_picker/lib/constants.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -8,8 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:start_app/other/alarm_db.dart';
 import 'package:start_app/other/alarm_info.dart';
-// import 'package:start_app/variables.dart';
-// import 'package:start_app/variables.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -22,14 +18,13 @@ class AlarmPage extends StatefulWidget {
 }
 
 class _AlarmPageState extends State<AlarmPage> {
-  // int workingAlarmsNum = 0;
-  List<String> alarmTime = [];
-  List<String> alarmDate = [];
-  bool timeIsPicked = false;
-  bool dateIsPicked = false;
-  TimeOfDay pickedTime;
-  DateTime pickedDate;
-  bool alarmPicker = false;
+  List<String> _alarmTime = [];
+  List<String> _alarmDate = [];
+  // bool _timeIsPicked = false;
+  // bool _dateIsPicked = false;
+  TimeOfDay _pickedTime;
+  DateTime _pickedDate;
+  bool _alarmPicker = false;
   AlarmDB _alarmDB = AlarmDB();
   Future<List<AlarmInfo>> _alarms;
 
@@ -70,62 +65,61 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 
   String getTextDate() {
-    if (pickedDate == null)
+    if (_pickedDate == null)
       return 'Click to pick date';
     else
-      return DateFormat('dd/MM/yyyy').format(pickedDate);
+      return DateFormat('dd/MM/yyyy').format(_pickedDate);
   }
 
   String getTextTime() {
-    if (pickedTime == null)
+    if (_pickedTime == null)
       return 'Click to pick time';
     else {
-      final hours = pickedTime.hour.toString().padLeft(2, '0');
-      final minutes = pickedTime.minute.toString().padLeft(2, '0');
-      return '$hours : $minutes';
+      final _hours = _pickedTime.hour.toString().padLeft(2, '0');
+      final _minutes = _pickedTime.minute.toString().padLeft(2, '0');
+      return '$_hours : $_minutes';
     }
   }
 
   Future pickDate(BuildContext context) async {
-    final initialDate = DateTime.now();
-    final newDate = await showDatePicker(
+    final _initialDate = DateTime.now();
+    final _newDate = await showDatePicker(
       context: context,
-      initialDate: pickedDate ?? initialDate,
+      initialDate: _pickedDate ?? _initialDate,
       firstDate: DateTime(DateTime.now().month),
       lastDate: DateTime(DateTime.now().year + 1),
     );
-    if (newDate == null) return;
+    if (_newDate == null) return;
     setState(() {
-      pickedDate = newDate;
-      dateIsPicked = true;
+      _pickedDate = _newDate;
+      // _dateIsPicked = true;
     });
   }
 
   Future pickTime(BuildContext context) async {
-    final initialTime = TimeOfDay.now();
-    final newTime = await showTimePicker(
+    final _initialTime = TimeOfDay.now();
+    final _newTime = await showTimePicker(
       context: context,
-      initialTime: pickedTime ?? initialTime,
+      initialTime: _pickedTime ?? _initialTime,
     );
-    if (newTime != null) {
+    if (_newTime != null) {
       setState(() {
-        timeIsPicked = true;
-        pickedTime = newTime;
-        // print("${pickedTime.toString()} + $timeIsPicked");
+        // _timeIsPicked = true;
+        _pickedTime = _newTime;
       });
-      print(timeIsPicked);
     }
   }
 
+  // Dynamically changing visibility of alarm picker dialog window
   void changeAlarmStateToTrue() {
     setState(() {
-      alarmPicker = true;
+      _alarmPicker = true;
     });
   }
 
   void changeAlarmStateToFalse() {
     setState(() {
-      alarmPicker = false;
+      _alarmPicker = false;
     });
   }
 
@@ -159,7 +153,7 @@ class _AlarmPageState extends State<AlarmPage> {
             ),
           ),
           Visibility(
-            visible: !alarmPicker,
+            visible: !_alarmPicker,
             child: Flexible(
               flex: 6,
               fit: FlexFit.tight,
@@ -303,7 +297,7 @@ class _AlarmPageState extends State<AlarmPage> {
             ),
           ),
           Visibility(
-            visible: !alarmPicker,
+            visible: !_alarmPicker,
             child: Flexible(
               flex: 1,
               fit: FlexFit.tight,
@@ -341,7 +335,7 @@ class _AlarmPageState extends State<AlarmPage> {
             ),
           ),
           Visibility(
-            visible: alarmPicker,
+            visible: _alarmPicker,
             child: Flexible(
               fit: FlexFit.tight,
               flex: 7,
@@ -473,16 +467,17 @@ class _AlarmPageState extends State<AlarmPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                if (pickedDate != null && pickedTime != null) {
+                                if (_pickedDate != null &&
+                                    _pickedTime != null) {
                                   changeAlarmStateToFalse();
-                                  alarmTime.add(getTextTime());
-                                  alarmDate.add(getTextDate());
+                                  _alarmTime.add(getTextTime());
+                                  _alarmDate.add(getTextDate());
                                   var futureDateTime = new DateTime(
-                                          pickedDate.year,
-                                          pickedDate.month,
-                                          pickedDate.day,
-                                          pickedTime.hour,
-                                          pickedTime.minute)
+                                          _pickedDate.year,
+                                          _pickedDate.month,
+                                          _pickedDate.day,
+                                          _pickedTime.hour,
+                                          _pickedTime.minute)
                                       .millisecondsSinceEpoch;
                                   var currentDateTime = new DateTime(
                                           DateTime.now().year,

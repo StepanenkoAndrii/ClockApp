@@ -10,11 +10,11 @@ import 'package:start_app/other/enums.dart';
 import 'package:start_app/views/stopwatch_page.dart';
 import 'package:start_app/other/time_info.dart';
 import 'package:start_app/views/timer_page.dart';
-// import 'package:start_app/variables.dart';
 
 import 'views/alarm_page.dart';
 import 'other/menu_info.dart';
 
+// Upload view page (clock, alarm, timer or stopwatch)
 Widget uploadPage(BuildContext context, MenuInfo data) {
   switch (data.menuType) {
     case MenuType.clock:
@@ -48,14 +48,14 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  MenuType menuTypeVar;
-  var timeBuffer = 0;
-  final List<Widget> menuTypesList = <Widget>[
-    ClockPage(),
-    AlarmPage(),
-    TimerPage(),
-    StopwatchPage()
-  ];
+  // MenuType menuTypeVar;
+  // var timeBuffer = 0;
+  // final List<Widget> menuTypesList = <Widget>[
+  //   ClockPage(),
+  //   AlarmPage(),
+  //   TimerPage(),
+  //   StopwatchPage()
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -68,79 +68,7 @@ class _HomePageState extends State<HomePage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // GestureDetector(
-                //   onHorizontalDragEnd: (DragEndDetails details) {
-                //     if (details.primaryVelocity > 0) {
-                //       print('yee');
-                //       menuTypeVar = MenuType.alarm;
-                //     } else if (details.primaryVelocity < 0) {
-                //       print('yee2');
-                //       menuTypeVar = MenuType.alarm;
-                //     }
-                //   },
-                //   child: uploadPage(context, data),
-                // ),
                 uploadPage(context, data),
-
-                // Container(
-                //   height: MediaQuery.of(context).size.height * 0.82,
-                //   child: ListView.builder(
-                //     scrollDirection: Axis.horizontal,
-                //     // physics: NeverScrollableScrollPhysics(),
-                //     itemCount: 4,
-                //     itemBuilder: (context, index) {
-                //       return Container(
-                //         // color: Colors.lightGreen[50],
-                //         height: MediaQuery.of(context).size.height * 0.82,
-                //         width: MediaQuery.of(context).size.width * 0.85,
-                //         child: Opacity(
-                //           // opacity: clockVisible ? 1 : 0,
-                //           opacity: 1,
-                //           child: menuTypesList[index],
-                //         ),
-                //       );
-                //     },
-                //     children: [
-                //       Container(
-                //         color: Colors.lightGreen,
-                //         height: MediaQuery.of(context).size.height * 0.82,
-                //         width: MediaQuery.of(context).size.width * 0.85,
-                //         child: Opacity(
-                //           opacity: clockVisible ? 1 : 0,
-                //           child: ClockPage(),
-                //         ),
-                //       ),
-                //       Container(
-                //         color: Colors.lightBlue,
-                //         height: MediaQuery.of(context).size.height * 0.82,
-                //         width: MediaQuery.of(context).size.width * 0.85,
-                //         child: Opacity(
-                //           opacity: alarmVisible ? 1 : 0,
-                //           child: AlarmPage(),
-                //         ),
-                //       ),
-                //       Container(
-                //         color: Colors.yellow,
-                //         height: MediaQuery.of(context).size.height * 0.82,
-                //         width: MediaQuery.of(context).size.width * 0.85,
-                //         child: Opacity(
-                //           opacity: timerVisible ? 1 : 0,
-                //           child: TimerPage(),
-                //         ),
-                //       ),
-                //       Container(
-                //         color: Colors.pink,
-                //         height: MediaQuery.of(context).size.height * 0.82,
-                //         width: MediaQuery.of(context).size.width * 0.85,
-                //         child: Opacity(
-                //           opacity: stopwatchVisible ? 1 : 0,
-                //           child: StopwatchPage(),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
                 Expanded(
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.085,
@@ -161,6 +89,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // Menu buttons
   Widget buildMenuButton(MenuInfo currentMenuInfo) {
     return Consumer<MenuInfo>(
       builder: (BuildContext context, MenuInfo value, Widget child) {
@@ -168,8 +97,8 @@ class _HomePageState extends State<HomePage> {
           height: 62,
           child: TextButton(
             onPressed: () {
-              var menuInfo = Provider.of<MenuInfo>(context, listen: false);
-              menuInfo.updateMenu(currentMenuInfo);
+              var _menuInfo = Provider.of<MenuInfo>(context, listen: false);
+              _menuInfo.updateMenu(currentMenuInfo);
             },
             style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsetsGeometry>(

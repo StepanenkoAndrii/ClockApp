@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:start_app/variables.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class StopwatchPage extends StatefulWidget {
@@ -15,17 +14,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
   final _isHours = true;
   final _scrollController = ScrollController();
 
-  // var timeBuffer = 0;
-
-  // void addToTimeBuffer() {
-  //   Timer.periodic(
-  //     Duration(milliseconds: 1),
-  //     (_) {
-  //       if (stopwatchIsWorking) timeBuffer += 1;
-  //     },
-  //   );
-  // }
-
   @override
   void dispose() {
     super.dispose();
@@ -35,9 +23,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
 
   @override
   Widget build(BuildContext context) {
-    // if (stopwatchIsWorking) {
-    //   _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-    // }
     return Container(
       height: MediaQuery.of(context).size.height * 0.82,
       child: Column(
@@ -66,7 +51,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
               child: StreamBuilder<int>(
                 builder: (context, snapshot) {
                   final value = snapshot.data;
-                  // final value = timeBuffer;
                   final displayTime =
                       StopWatchTimer.getDisplayTime(value, hours: _isHours);
                   return Text(
@@ -97,9 +81,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     ElevatedButton(
                       onPressed: () {
                         _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-                        // stopwatchIsWorking = true;
-                        // addToTimeBuffer();
-                        // print("time buffer: $timeBuffer");
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
@@ -130,7 +111,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     ElevatedButton(
                       onPressed: () {
                         _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
-                        // stopwatchIsWorking = false;
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(

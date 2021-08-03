@@ -13,10 +13,10 @@ class ClockPage extends StatefulWidget {
 class _ClockPageState extends State<ClockPage> {
   @override
   Widget build(BuildContext context) {
-    var now = DateTime.now();
-    var timezoneString = now.timeZoneOffset.toString().split(".").first;
-    var offsetSign = '';
-    if (!timezoneString.startsWith('-')) offsetSign = '+';
+    var _now = DateTime.now();
+    var _timezoneString = _now.timeZoneOffset.toString().split(".").first;
+    var _offsetSign = '';
+    if (!_timezoneString.startsWith('-')) _offsetSign = '+';
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.82,
@@ -103,7 +103,7 @@ class _ClockPageState extends State<ClockPage> {
                       width: 16,
                     ),
                     Text(
-                      "UTC" + offsetSign + timezoneString,
+                      "UTC" + _offsetSign + _timezoneString,
                       style: GoogleFonts.acme(
                         textStyle: TextStyle(color: Colors.white, fontSize: 16),
                       ),

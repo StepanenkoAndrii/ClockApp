@@ -17,27 +17,28 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
-  var hours = 0;
-  var minutes = 0;
-  var seconds = 0;
-  var started = true;
-  var stopped = true;
-  var timeForTimer = 0;
-  var timerIsWorking = false;
+  var _hours = 0;
+  var _minutes = 0;
+  var _seconds = 0;
+  var _started = true;
+  var _stopped = true;
+  var _timeForTimer = 0;
+  var _timerIsWorking = false;
   CountDownController _controller = CountDownController();
   var _visible = false;
-  var counter = 0;
+  var _counter = 0;
 
   void startTimer() {
     setState(() {
-      counter++;
-      started = true;
-      stopped = false;
-      timerIsWorking = true;
+      _counter++;
+      _started = true;
+      _stopped = false;
+      _timerIsWorking = true;
       _visible = true;
     });
-    if (timeForTimer < 1) timeForTimer = hours * 3600 + minutes * 60 + seconds;
-    if (counter == 1)
+    if (_timeForTimer < 1)
+      _timeForTimer = _hours * 3600 + _minutes * 60 + _seconds;
+    if (_counter == 1)
       _controller.start();
     else
       _controller.resume();
@@ -48,13 +49,13 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
       (Timer timer) {
         setState(
           () {
-            if (timeForTimer < 1 || !timerIsWorking) {
-              if (timeForTimer < 1) _visible = false;
+            if (_timeForTimer < 1 || !_timerIsWorking) {
+              if (_timeForTimer < 1) _visible = false;
               timer.cancel();
-              started = false;
-              stopped = true;
+              _started = false;
+              _stopped = true;
             } else {
-              timeForTimer -= 1;
+              _timeForTimer -= 1;
             }
           },
         );
@@ -64,9 +65,9 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
 
   void stopTimer() {
     setState(() {
-      started = false;
-      stopped = true;
-      timerIsWorking = false;
+      _started = false;
+      _stopped = true;
+      _timerIsWorking = false;
       _visible = true;
     });
     _controller.pause();
@@ -74,10 +75,10 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
 
   void resetTimer() {
     setState(() {
-      started = false;
-      stopped = true;
-      timerIsWorking = false;
-      timeForTimer = 0;
+      _started = false;
+      _stopped = true;
+      _timerIsWorking = false;
+      _timeForTimer = 0;
       _visible = false;
     });
   }
@@ -88,18 +89,6 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
     tz.initializeTimeZones();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused) {
-      print("paused");
-      // _controller.pause();
-    } else if (state == AppLifecycleState.resumed) {
-      print("resumed");
-      // _controller.resume();
-    }
   }
 
   @override
@@ -162,17 +151,17 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                             fontSize: 32,
                           ),
                         ),
-                        value: hours,
+                        value: _hours,
                         minValue: 0,
                         maxValue: 23,
                         onChanged: (value) {
                           setState(
                             () {
                               if (value > 0)
-                                started = false;
+                                _started = false;
                               else
-                                started = true;
-                              hours = value;
+                                _started = true;
+                              _hours = value;
                             },
                           );
                         },
@@ -211,17 +200,17 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                             fontSize: 32,
                           ),
                         ),
-                        value: minutes,
+                        value: _minutes,
                         minValue: 0,
                         maxValue: 59,
                         onChanged: (value) {
                           setState(
                             () {
                               if (value > 0)
-                                started = false;
+                                _started = false;
                               else
-                                started = true;
-                              minutes = value;
+                                _started = true;
+                              _minutes = value;
                             },
                           );
                         },
@@ -260,17 +249,17 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                             fontSize: 32,
                           ),
                         ),
-                        value: seconds,
+                        value: _seconds,
                         minValue: 0,
                         maxValue: 59,
                         onChanged: (value) {
                           setState(
                             () {
                               if (value > 0)
-                                started = false;
+                                _started = false;
                               else
-                                started = true;
-                              seconds = value;
+                                _started = true;
+                              _seconds = value;
                             },
                           );
                         },
@@ -284,7 +273,7 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                     backgroundColor: Colors.transparent,
                     fillColor: Colors.white,
                     ringColor: Colors.grey[800],
-                    duration: timeForTimer,
+                    duration: _timeForTimer,
                     width: MediaQuery.of(context).size.width * 0.7,
                     height: MediaQuery.of(context).size.height * 0.5,
                     strokeCap: StrokeCap.round,
@@ -318,7 +307,7 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: started ? null : startTimer,
+                      onPressed: _started ? null : startTimer,
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                           Colors.transparent,
@@ -341,12 +330,12 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                       ),
                       child: Icon(
                         Icons.play_circle_outline,
-                        color: started ? Colors.grey[800] : Colors.white,
+                        color: _started ? Colors.grey[800] : Colors.white,
                         size: 80,
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: stopped ? null : stopTimer,
+                      onPressed: _stopped ? null : stopTimer,
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                           Colors.transparent,
@@ -369,7 +358,7 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                       ),
                       child: Icon(
                         Icons.pause_circle_outline,
-                        color: stopped ? Colors.grey[800] : Colors.white,
+                        color: _stopped ? Colors.grey[800] : Colors.white,
                         size: 80,
                       ),
                     ),
@@ -379,7 +368,7 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                   height: 16,
                 ),
                 ElevatedButton(
-                  onPressed: timeForTimer > 0 ? resetTimer : null,
+                  onPressed: _timeForTimer > 0 ? resetTimer : null,
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
                       Colors.grey[800],
@@ -402,7 +391,7 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
                   child: Text(
                     'Reset',
                     style: GoogleFonts.acme(
-                      color: timeForTimer > 0 ? Colors.white : Colors.black,
+                      color: _timeForTimer > 0 ? Colors.white : Colors.black,
                       fontSize: 32,
                     ),
                   ),

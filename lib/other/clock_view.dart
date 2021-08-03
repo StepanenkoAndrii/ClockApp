@@ -43,90 +43,93 @@ class _ClockViewState extends State<ClockView> {
 }
 
 class ClockPainter extends CustomPainter {
-  var dateTime = DateTime.now();
+  var _dateTime = DateTime.now();
 
   @override
   void paint(Canvas canvas, Size size) {
-    var centerX = size.width / 2;
-    var centerY = size.height / 2;
-    var center = Offset(centerX, centerY);
-    var radius = min(centerX, centerY);
+    var _centerX = size.width / 2;
+    var _centerY = size.height / 2;
+    var _center = Offset(_centerX, _centerY);
+    var _radius = min(_centerX, _centerY);
 
-    var fillBrush = Paint()..color = Colors.black;
-    var outlineBrush = Paint()
+    var _fillBrush = Paint()..color = Colors.black;
+    var _outlineBrush = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 62.5
       ..color = Color(0xFFEAECFF);
-    var centerFillBrush = Paint()..color = Color(0xFFEAECFF);
+    var _centerFillBrush = Paint()..color = Color(0xFFEAECFF);
 
-    var secHandBrush = Paint()
+    // Hands' brushes
+    var _secHandBrush = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 125
       ..strokeCap = StrokeCap.round
       ..color = Colors.white;
-    var minHandBrush = Paint()
+    var _minHandBrush = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 62.5
       ..strokeCap = StrokeCap.round
       ..color = Colors.white;
-    var hourHandBrush = Paint()
+    var _hourHandBrush = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 42
       ..strokeCap = StrokeCap.round
       ..color = Colors.white;
 
-    var dashBrush = Paint()
+    var _dashBrush = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2
       ..strokeCap = StrokeCap.round
       ..color = Color(0xFFEAECFF);
 
-    canvas.drawCircle(center, radius * 0.75, fillBrush);
-    canvas.drawCircle(center, radius * 0.75, outlineBrush);
+    canvas.drawCircle(_center, _radius * 0.75, _fillBrush);
+    canvas.drawCircle(_center, _radius * 0.75, _outlineBrush);
 
-    var hourHandX = centerX +
-        (radius * 0.375) *
-            cos((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
-    var hourHandY = centerY +
-        (radius * 0.375) *
-            sin((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
-    canvas.drawLine(center, Offset(hourHandX, hourHandY), hourHandBrush);
+    // Getting hands' coordinates and draw them
+    var _hourHandX = _centerX +
+        (_radius * 0.375) *
+            cos((_dateTime.hour * 30 + _dateTime.minute * 0.5) * pi / 180);
+    var _hourHandY = _centerY +
+        (_radius * 0.375) *
+            sin((_dateTime.hour * 30 + _dateTime.minute * 0.5) * pi / 180);
+    canvas.drawLine(_center, Offset(_hourHandX, _hourHandY), _hourHandBrush);
 
-    var minHandX = centerX +
-        (radius * 0.5) *
-            cos((dateTime.minute * 6 + dateTime.second * 0.1) * pi / 180);
-    var minHandY = centerY +
-        (radius * 0.5) *
-            sin((dateTime.minute * 6 + dateTime.second * 0.1) * pi / 180);
-    canvas.drawLine(center, Offset(minHandX, minHandY), minHandBrush);
+    var _minHandX = _centerX +
+        (_radius * 0.5) *
+            cos((_dateTime.minute * 6 + _dateTime.second * 0.1) * pi / 180);
+    var _minHandY = _centerY +
+        (_radius * 0.5) *
+            sin((_dateTime.minute * 6 + _dateTime.second * 0.1) * pi / 180);
+    canvas.drawLine(_center, Offset(_minHandX, _minHandY), _minHandBrush);
 
-    var secHandX =
-        centerX + (radius * 0.6) * cos(dateTime.second * 6 * pi / 180);
-    var secHandY =
-        centerY + (radius * 0.6) * sin(dateTime.second * 6 * pi / 180);
-    canvas.drawLine(center, Offset(secHandX, secHandY), secHandBrush);
+    var _secHandX =
+        _centerX + (_radius * 0.6) * cos(_dateTime.second * 6 * pi / 180);
+    var _secHandY =
+        _centerY + (_radius * 0.6) * sin(_dateTime.second * 6 * pi / 180);
+    canvas.drawLine(_center, Offset(_secHandX, _secHandY), _secHandBrush);
 
-    var smallOuterCircleRadius = radius - radius / 12.5;
-    var smallInnerCircleRadius = radius - radius / 7.8125;
-    var outerCircleRadius = radius;
-    var innerCircleRadius = radius - radius / 7.8125;
+    // Drawing clock's edges
+    var _smallOuterCircleRadius = _radius - _radius / 12.5;
+    var _smallInnerCircleRadius = _radius - _radius / 7.8125;
+    var _outerCircleRadius = _radius;
+    var _innerCircleRadius = _radius - _radius / 7.8125;
     for (var i = 0; i < 360; i += 6) {
       if (i % 30 == 0) {
-        var x1 = centerX + outerCircleRadius * cos(i * pi / 180);
-        var y1 = centerY + outerCircleRadius * sin(i * pi / 180);
-        var x2 = centerX + innerCircleRadius * cos(i * pi / 180);
-        var y2 = centerY + innerCircleRadius * sin(i * pi / 180);
-        canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
+        var x1 = _centerX + _outerCircleRadius * cos(i * pi / 180);
+        var y1 = _centerY + _outerCircleRadius * sin(i * pi / 180);
+        var x2 = _centerX + _innerCircleRadius * cos(i * pi / 180);
+        var y2 = _centerY + _innerCircleRadius * sin(i * pi / 180);
+        canvas.drawLine(Offset(x1, y1), Offset(x2, y2), _dashBrush);
       } else {
-        var x1 = centerX + smallOuterCircleRadius * cos(i * pi / 180);
-        var y1 = centerY + smallOuterCircleRadius * sin(i * pi / 180);
-        var x2 = centerX + smallInnerCircleRadius * cos(i * pi / 180);
-        var y2 = centerY + smallInnerCircleRadius * sin(i * pi / 180);
-        canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
+        var x1 = _centerX + _smallOuterCircleRadius * cos(i * pi / 180);
+        var y1 = _centerY + _smallOuterCircleRadius * sin(i * pi / 180);
+        var x2 = _centerX + _smallInnerCircleRadius * cos(i * pi / 180);
+        var y2 = _centerY + _smallInnerCircleRadius * sin(i * pi / 180);
+        canvas.drawLine(Offset(x1, y1), Offset(x2, y2), _dashBrush);
       }
     }
 
-    canvas.drawCircle(center, size.width / 42, centerFillBrush);
+    canvas.drawCircle(_center, size.width / 42, _centerFillBrush);
   }
 
   @override
